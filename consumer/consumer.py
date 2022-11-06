@@ -14,6 +14,6 @@ def callbackFunctionForQueue(ch,method,properties,body):
     title='Warning!',
     message = body)
 
-channel.basic_consume(queue='comunicationQueue', on_message_callback=callbackFunctionForQueue, auto_ack=True)
+channel.basic_consume(queue='communicationQueue', on_message_callback=callbackFunctionForQueue, auto_ack=True)
 #this will be command for starting the consumer session
 channel.start_consuming()
