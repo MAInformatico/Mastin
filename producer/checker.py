@@ -33,8 +33,8 @@ class checker:
 
     def getHosts(self):
         hostsList = []
-        keylist = self.getIPs("../TelegramBot/hosts.txt") #get IPs from hosts.txt (more details about it on: https://github.com/MAInformatico/Raspberry-Pi-Monitoring-Network/tree/master/RaspberryPiFiles )
+        keylist = self.getIPs("<your_path>/hosts.txt") #get IPs from hosts.txt (more details about it on: https://github.com/MAInformatico/Raspberry-Pi-Monitoring-Network/tree/master/RaspberryPiFiles )
         for i in range(len(keylist)):
-            hostsList.append(self.getHostname(keylist[i],"../TelegramBot/dictionary.txt")) #where dictionary.txt is the file that contains my "DNS file" Please, create your own file dictionary.txt
+            hostsList.append(self.getHostname(keylist[i],"<your_path>/dictionary.txt")) #where dictionary.txt is the file that contains my "DNS file" Please, create your own file dictionary.txt
 
         return hostsList
