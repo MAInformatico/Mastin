@@ -11,8 +11,8 @@ credentials = pika.PlainCredentials('user','userPass')
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=server, port=currentPort, credentials= credentials))
 channel = connection.channel()
 channel.exchange_declare('test', durable=True, exchange_type='topic')#defining callback functions responding to corresponding queue callbacks
+
 def callbackFunctionForQueue(ch,method,properties,body):
- #print('Message received from server: ', body)
     lTitle = 'Warning'
     lMessage = body
     if platform.system() == 'Darwin':
