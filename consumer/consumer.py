@@ -13,8 +13,6 @@ def readFile(thefile):
 
 connectionData = readFile('connectionData.txt')
 
-server = '192.168.1.39'
-currentPort = '5672'
 #declaring the credentials needed for connection like host, port, username, password, exchange etc
 credentials = pika.PlainCredentials(connectionData[0],connectionData[1])
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=connectionData[2], port=connectionData[3], credentials= credentials))
