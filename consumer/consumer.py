@@ -4,11 +4,20 @@ import pika
 import os
 import platform
 
-server = 'IP server'
-currentPort = 'your port'
+def readFile(thefile):
+    with open(str(thefile),'r') as f:
+        info = []        
+        for line in f:            
+            info.append(line.rstrip())
+    return info
+
+connectionData = readFile('connectionData.txt')
+
+server = '192.168.1.39'
+currentPort = '5672'
 #declaring the credentials needed for connection like host, port, username, password, exchange etc
-credentials = pika.PlainCredentials('user','userPass')
-connection = pika.BlockingConnection(pika.ConnectionParameters(host=server, port=currentPort, credentials= credentials))
+credentials = pika.PlainCredentials(connectionData[0],connectionData[1])
+connection = pika.BlockingConnection(pika.ConnectionParameters(host=connectionData[2], port=connectionData[3], credentials= credentials))
 channel = connection.channel()
 channel.exchange_declare('test', durable=True, exchange_type='topic')#defining callback functions responding to corresponding queue callbacks
 
