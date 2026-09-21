@@ -1,8 +1,14 @@
 import re
+import os
 
 class checker:
 
-    def getIPs(self,thefile): #read all the IP from thefile parameter. Return a list containing the IPs
+    def __init__(self):
+        # Rutas configurables por variables de entorno
+        self.hosts_file = os.environ.get('HOSTS_FILE', '/app/hosts.txt')
+        self.dictionary_file = os.environ.get('DICTIONARY_FILE', '/app/dictionary.txt')
+
+    def getIPs(self, thefile):  # Lee todas las IPs del archivo y devuelve una lista
         logfile = list(open(str(thefile), 'r').read().split('\n'))
         newip = []
         for entry in logfile:
@@ -11,30 +17,27 @@ class checker:
                 newip.append(ip)
         return newip
 
-    def readFile(self,thefile): #Return a dictionary after read IP and hostname form a file and store them in the mentioned dictionary with key: IP and value: hostname.
-        with open(str(thefile),'r') as f: #format file: "IP<space>hostname"
+    def readFile(self, thefile):  # Devuelve un diccionario {IP: hostname}
+        with open(str(thefile), 'r') as f:  # formato: "IP<space>hostname"
             auxlist = []
-            ip_not_found = True
             for line in f:
-                ip_not_found = False
                 auxlist.append(line.rstrip())
 
         dictionary = {}
         for i in range(len(auxlist)):
-            auxlist[i] = auxlist[i].split(" ")
+            if auxlist[i]:  # ignorar líneas vacías
+                auxlist[i] = auxlist[i].split(" ")
         dictionary = dict(auxlist)
 
         return dictionary
 
-    def getHostname(self, IP,thefile): #given a IP, return the hostname
+    def getHostname(self, IP, thefile):  # Dada una IP, devuelve el hostname
         data = self.readFile(thefile)
         return data.get(IP)
 
-
     def getHosts(self):
         hostsList = []
-        keylist = self.getIPs("<your_path>/hosts.txt") #get IPs from hosts.txt (more details about it on: https://github.com/MAInformatico/Raspberry-Pi-Monitoring-Network/tree/master/RaspberryPiFiles )
+        keylist = self.getIPs(self.hosts_file)  # IPs desde hosts.txt
         for i in range(len(keylist)):
-            hostsList.append(self.getHostname(keylist[i],"<your_path>/dictionary.txt")) #where dictionary.txt is the file that contains my "DNS file" Please, create your own file dictionary.txt
-
+            hostsList.append(self.getHostname(keylist[i], self.dictionary_file))
         return hostsList
